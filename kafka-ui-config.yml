@@ -1,0 +1,15 @@
+kafka:
+  clusters:
+    - name: local-test
+      bootstrapServers: kafka:9094
+      serde:
+        - name: UsersName
+          filePath: /glue-serde/uber-jar-1.0.0.jar
+          className: com.gokulnathp.kafbat.glue.serde.GlueSerde
+          properties:
+            valueSchemaNameTemplate: "%s_name_added"
+        - name: UsersEmail
+          filePath: /glue-serde/uber-jar-1.0.0.jar
+          className: com.gokulnathp.kafbat.glue.serde.GlueSerde
+          properties:
+            valueSchemaNameTemplate: "%s_email_added"

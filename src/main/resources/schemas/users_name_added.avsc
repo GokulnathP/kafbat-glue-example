@@ -1,0 +1,14 @@
+{
+  "type": "record",
+  "name": "users_name_added",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int"
+    },
+    {
+      "name": "name",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "record",
+  "name": "users_email_added",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int"
+    },
+    {
+      "name": "email",
+      "type": "string"
+    }
+  ]
+}

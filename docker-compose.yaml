@@ -1,0 +1,62 @@
+services:
+  kafka:
+    image: apache/kafka:latest
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    environment:
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092,EXTERNAL://kafka:9094
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 1
+
+  schemaregistry:
+    image: motoserver/moto
+    hostname: schemaregistry
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000" ]
+    ports:
+      - "3000:3000"
+    environment:
+      MOTO_PORT: 3000
+
+  schema-registry-setup:
+    image: amazon/aws-cli
+    environment:
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: DUMMY
+      AWS_SECRET_ACCESS_KEY: DUMMY
+      AWS_SESSION_TOKEN: DUMMY
+    volumes:
+      - ./src/main/resources/schemas:/schemas
+      - ./scripts/setup-schema-registry.sh:/setup-schema-registry.sh
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["/setup-schema-registry.sh"]
+    depends_on:
+      schemaregistry:
+        condition: service_healthy
+
+  kafka-ui:
+    container_name: kafka-ui
+    image: ghcr.io/kafbat/kafka-ui:latest
+    ports:
+      - "8080:8080"
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+      AWS_ACCESS_KEY_ID: DUMMY
+      AWS_SECRET_ACCESS_KEY: DUMMY
+      SPRING_CONFIG_ADDITIONAL-LOCATION: /config.yml
+    volumes:
+      - ./kafka-ui-config.yml:/config.yml
+      - ./lib:/glue-serde
+    depends_on:
+      - kafka
+      - schema-registry-setup
