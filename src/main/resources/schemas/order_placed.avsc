@@ -1,0 +1,14 @@
+{
+  "type": "record",
+  "name": "order_placed",
+  "fields": [
+    {
+      "name": "orderId",
+      "type": "int"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    }
+  ]
+}

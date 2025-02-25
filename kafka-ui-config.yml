@@ -2,14 +2,49 @@ kafka:
   clusters:
     - name: local-test
       bootstrapServers: kafka:9094
+      defaultValueSerde: GlueSchemaRegistry
       serde:
-        - name: UsersName
+        - name: GlueSchemaRegistry
           filePath: /glue-serde/uber-jar-1.0.0.jar
           className: com.gokulnathp.kafbat.glue.serde.GlueSerde
           properties:
-            valueSchemaNameTemplate: "%s_name_added"
-        - name: UsersEmail
+            valueSchemaNameTemplate: "GlueSchemaRegistry"
+
+        - name: UsersNameAdded
           filePath: /glue-serde/uber-jar-1.0.0.jar
           className: com.gokulnathp.kafbat.glue.serde.GlueSerde
           properties:
-            valueSchemaNameTemplate: "%s_email_added"
+            valueSchemaNameTemplate: "users_name_added"
+        - name: UsersEmailAdded
+          filePath: /glue-serde/uber-jar-1.0.0.jar
+          className: com.gokulnathp.kafbat.glue.serde.GlueSerde
+          properties:
+            valueSchemaNameTemplate: "users_email_added"
+
+        - name: OrderPlaced
+          filePath: /glue-serde/uber-jar-1.0.0.jar
+          className: com.gokulnathp.kafbat.glue.serde.GlueSerde
+          properties:
+            valueSchemaNameTemplate: "order_placed"
+        - name: OrderCompleted
+          filePath: /glue-serde/uber-jar-1.0.0.jar
+          className: com.gokulnathp.kafbat.glue.serde.GlueSerde
+          properties:
+            valueSchemaNameTemplate: "order_completed"
+
+        - name: InventoryUpdated
+          filePath: /glue-serde/uber-jar-1.0.0.jar
+          className: com.gokulnathp.kafbat.glue.serde.GlueSerde
+          properties:
+            valueSchemaNameTemplate: "inventory_updated"
+
+        - name: ShipmentInitiated
+          filePath: /glue-serde/uber-jar-1.0.0.jar
+          className: com.gokulnathp.kafbat.glue.serde.GlueSerde
+          properties:
+            valueSchemaNameTemplate: "shipment_initiated"
+        - name: ShipmentDelivered
+          filePath: /glue-serde/uber-jar-1.0.0.jar
+          className: com.gokulnathp.kafbat.glue.serde.GlueSerde
+          properties:
+            valueSchemaNameTemplate: "shipment_delivered"

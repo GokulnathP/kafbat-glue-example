@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "shipment_delivered",
+  "fields": [
+    {
+      "name": "orderId",
+      "type": "int"
+    },
+    {
+      "name": "shipmentId",
+      "type": "int"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "inventory_updated",
+  "fields": [
+    {
+      "name": "orderId",
+      "type": "int"
+    },
+    {
+      "name": "inventoryId",
+      "type": "int"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    }
+  ]
+}
